@@ -31,7 +31,7 @@ public class FilmeForm extends JFrame {
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(5, 5, 5, 5);
 
-        labelId = new JLabel("Id:");
+        labelId = new JLabel("ID:");
         constraints.gridx = 0;
         constraints.gridy = 0;
         painelEntrada.add(labelId, constraints);
@@ -99,17 +99,18 @@ public class FilmeForm extends JFrame {
         listaDeFilmes.setModel(carregarDadosLocadoras());
     }
 
-    private Filme construirFilme() {
+    private Filme construirFilme(){
         return campoId.getText().isEmpty()
                 ? new Filme(campoNomeFilme.getText(), campoDiretor.getText())
                 : new Filme(
-                parseInt(campoId.getText()),
-                campoNomeFilme.getText(),
-                campoDiretor.getText());
+                        parseInt(campoId.getText()),
+                        campoNomeFilme.getText(),
+                        campoDiretor.getText());
     }
 
-    private void selecionarFilme () {
+    private void selecionarFilme(){
         var filme = listaDeFilmes.getSelectedValue();
+        if (filme == null) return;
         campoNomeFilme.setText(filme.getNome());
         campoDiretor.setText(filme.getDiretor());
         campoId.setText(filme.getId().toString());

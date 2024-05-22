@@ -11,32 +11,24 @@ import java.util.stream.Collectors;
 
 public class FilmeService {
 
-/*    private static final String NOME_DIRETORIO = System.getProperty("user.dir");
-    private static final String NOME_ARQUIVO = "\\Locadoras.txt";
-
-    private final File locadoraFile = new File(NOME_DIRETORIO, NOME_ARQUIVO); */
-
     public void salvar(Filme filme) {
         try {
             var dao = new FilmeDao();
-
             if (filme.getId() == null) {
                 dao.inserir(filme);
-
-            } else {
+            }else {
                 dao.atualizar(filme);
-
             }
-        } catch (Exception e) {
+        }catch (Exception e){
             System.out.println(e.getMessage());
         }
     }
 
-    public List<Filme> listarFilmes() {
+     public List<Filme> listarFilmes() {
         try {
             var dao = new FilmeDao();
             return dao.listarTodos();
-        } catch (Exception e) {
+        }catch (Exception e){
             System.out.println(e.getMessage());
             return Collections.emptyList();
         }

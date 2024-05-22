@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FilmeDao { //DAO (DATA ACCESS OBJECT) (CONEXÃO COM O BANCO / DBA)
+public class FilmeDao {
     private Connection connection;
 
     public FilmeDao() throws SQLException {
@@ -24,17 +24,17 @@ public class FilmeDao { //DAO (DATA ACCESS OBJECT) (CONEXÃO COM O BANCO / DBA)
     }
 
     public void inserir(Filme filme) throws SQLException {
-        String sql = "insert into filme(nome, diretor) values(?,?)";
-        PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setString(1, filme.getNome());
-        ps.setString(2, filme.getDiretor());
-        ps.execute();
+            String sql = "insert into filme(nome,diretor) values(?,?)";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, filme.getNome());
+            ps.setString(2, filme.getDiretor());
+            ps.execute();
     }
 
     public List<Filme> listarTodos() throws SQLException {
         List<Filme> filmes = new ArrayList<Filme>();
 
-        ResultSet rs = connection.prepareStatement("select * from filme").executeQuery(); //vai linha por linha no DB e retorna o valor
+        ResultSet rs = connection.prepareStatement("select * from filme").executeQuery();
         while (rs.next()) {
             filmes.add(new Filme(
                     rs.getInt("id"),

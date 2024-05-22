@@ -42,10 +42,7 @@ public class Filme {
 
     @Override
     public String toString() {
-        return "ID: " + id + " Nome: " + nome + " Diretor: " + diretor;
+        return "Id: " + id + " Nome: " + nome + " Diretor: " + diretor;
     }
 
-    public String toConteudo() {
-        return nome + ":" + diretor;
-    }
 }
