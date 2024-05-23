@@ -19,6 +19,9 @@ public class JTableExample {
             // Bloqueia a edição da tabela
             table.setDefaultEditor(Object.class, null);
 
+            // Desativa a reordenação das colunas
+            table.getTableHeader().setReorderingAllowed(false);
+
             // Adiciona um ouvinte de seleção à tabela
             table.getSelectionModel().addListSelectionListener(e -> selecionarFilme(table, e));
 
@@ -26,6 +29,7 @@ public class JTableExample {
             frame.pack();
             frame.setLocationRelativeTo(null); // Centraliza o frame na tela
             frame.setVisible(true);
+
         });
     }
 
@@ -51,12 +55,17 @@ public class JTableExample {
         // Conexão com o banco de dados
         String url = "jdbc:mysql://localhost:3306/javadb?useTimezone=true&serverTimezone=UTC";
         String user = "root";
-        String password = "root";
+        String password = "";
 
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String sql = "SELECT * FROM filme";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 ResultSet resultSet = statement.executeQuery();
+
+                //O que é um ResultSet em Java?
+                // Perfeito, o ResultSet é uma classe do java que armazena os resultados provenientes de uma query SQL realizada.
+                // Ele funciona como um conjunto (Set), e guarda uma tabela que é o resultado da consulta SQL.
+
                 while (resultSet.next()) {
                     int id = resultSet.getInt("id");
                     String nome = resultSet.getString("nome");

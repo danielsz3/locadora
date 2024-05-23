@@ -3,11 +3,8 @@ package com.unialfa.service;
 import com.unialfa.dao.FilmeDao;
 import com.unialfa.model.Filme;
 
-import java.io.*;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FilmeService {
 
@@ -19,6 +16,18 @@ public class FilmeService {
             }else {
                 dao.atualizar(filme);
             }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void deletar (int id) {
+        try {
+            var dao = new FilmeDao();
+            if (id > -1) {
+                dao.deletar(id);
+            }
+
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
