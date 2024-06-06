@@ -3,10 +3,10 @@ package com.unialfa.view;
 import com.unialfa.model.Diretor;
 import com.unialfa.service.DiretorService;
 
-import javax.swing.text.MaskFormatter;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.sql.Date;
 import java.text.ParseException;
@@ -265,11 +265,6 @@ public class DiretorForm extends JFrame {
                 campoCarDiretor.setText(dataFormatada);
             }
         }
-    }
-
-    private Date parseDate(String date) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-        return new Date(format.parse(date).getTime());
     }
 
     private void menuPrincipal() {
