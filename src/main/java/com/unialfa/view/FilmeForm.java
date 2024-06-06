@@ -22,7 +22,9 @@ public class FilmeForm extends JFrame {
     private JButton botaoSalvar;
     private JButton botaoCancelar;
     private JButton botaoDeletar;
+    private JButton botaoVoltar;
     private JTable tabela;
+
 
     public FilmeForm() {
         service = new FilmeService();
@@ -108,6 +110,16 @@ public class FilmeForm extends JFrame {
         constraints.gridy = 3;
         painelEntrada.add(botaoDeletar, constraints);
 
+        botaoVoltar = new JButton("Menu Principal");
+        botaoVoltar.addActionListener(e -> menuPrincipal());
+        constraints.gridx = 0;
+        constraints.gridy = 6;
+        constraints.gridwidth = 2;
+        constraints.insets = new Insets(10, 10, 10, 10);
+        constraints.anchor = GridBagConstraints.CENTER;
+
+        painelEntrada.add(botaoVoltar, constraints);
+
         return painelEntrada;
     }
 
@@ -127,45 +139,76 @@ public class FilmeForm extends JFrame {
     }
 
     private void salvar() {
-        service.salvar(construirFilme());
-        limparCampos();
-        tabela.setModel(carregarDadosLocadoras());
-        }
-
-        private void deletar () {
-            service.deletar(Integer.parseInt(campoId.getText()));
+        try {
+            service.salvar(construirFilme());
             limparCampos();
             tabela.setModel(carregarDadosLocadoras());
-        }
-
-        private void limparCampos () {
-            campoNomeFilme.setText("");
-            campoDiretor.setText("");
-            campoId.setText("");
-        }
-
-        private Filme construirFilme () {
-            return campoId.getText().isEmpty()
-                    ? new Filme(campoNomeFilme.getText(), campoDiretor.getText())
-                    : new Filme(
-                    parseInt(campoId.getText()),
-                    campoNomeFilme.getText(),
-                    campoDiretor.getText());
-        }
-
-        private void selecionarFilme (ListSelectionEvent e){
-            if (!e.getValueIsAdjusting()) {
-                int selectedRow = tabela.getSelectedRow();
-                if (selectedRow != -1) {
-                    var id = (Integer) tabela.getValueAt(selectedRow, 0);
-                    var nome = (String) tabela.getValueAt(selectedRow, 1);
-                    var diretor = (String) tabela.getValueAt(selectedRow, 2);
-
-                    campoId.setText(id.toString());
-                    campoNomeFilme.setText(nome);
-                    campoDiretor.setText(diretor);
-                }
-            }
-
+        } catch (RuntimeException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao salvar o filme: "
+                            +
+                            ex.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
+
+    private void deletar() {
+        service.deletar(Integer.parseInt(campoId.getText()));
+        limparCampos();
+        tabela.setModel(carregarDadosLocadoras());
+    }
+
+    private void limparCampos() {
+        campoNomeFilme.setText("");
+        campoDiretor.setText("");
+        campoId.setText("");
+    }
+
+    private Filme construirFilme() {
+        String nomeFilme = campoNomeFilme.getText();
+        String diretor = campoDiretor.getText();
+
+        if (!nomeFilme.matches("[A-Za-z\\s]+")) {
+            throw new RuntimeException("O nome do filme não pode conter números ou símbolos.");
+        }
+
+        if (!diretor.matches("[A-Za-z\\s]+")) {
+            throw new RuntimeException("O nome do diretor não pode conter números ou símbolos.");
+        }
+
+        try {
+            return campoId.getText().isEmpty()
+                    ? new Filme(nomeFilme, diretor)
+                    : new Filme(
+                    parseInt(campoId.getText()),
+                    nomeFilme,
+                    diretor);
+        } catch (NumberFormatException ex) {
+            throw new RuntimeException("Quantidade de prêmios deve ser um número inteiro.");
+        }
+    }
+
+    private void selecionarFilme(ListSelectionEvent e) {
+        if (!e.getValueIsAdjusting()) {
+            int selectedRow = tabela.getSelectedRow();
+            if (selectedRow != -1) {
+                var id = (Integer) tabela.getValueAt(selectedRow, 0);
+                var nome = (String) tabela.getValueAt(selectedRow, 1);
+                var diretor = (String) tabela.getValueAt(selectedRow, 2);
+
+                campoId.setText(id.toString());
+                campoNomeFilme.setText(nome);
+                campoDiretor.setText(diretor);
+            }
+        }
+
+    }
+
+    private void menuPrincipal() {
+        dispose();
+        MenuForm menu = new MenuForm();
+        menu.setVisible(true);
+    }
+
+}
